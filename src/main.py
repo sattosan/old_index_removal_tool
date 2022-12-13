@@ -12,7 +12,7 @@ excluded_indicies: list[str] = config("EXCLUDED_INDICIES").split(",")
 
 
 # 削除可能なindexを選択
-def select_deletable_indices(indices: str):
+def select_deletable_indices(indices):
     return dict(filter(
         lambda index: is_deletable_index(index[0], index[1]),
         indices.items()))
@@ -112,7 +112,7 @@ def main():
     # 削除 or 終了
     if key_input in ["Y", "y", "yes"]:
         print(f"=> Target indices have deleted in {config('APP_ENV')}.")
-        # es.indices.delete(index=list(deletable_indices.keys()))
+        es.indices.delete(index=list(deletable_indices.keys()))
     print("Exit this program.")
 
 
