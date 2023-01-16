@@ -93,6 +93,7 @@ def main():
 
     if not deletable_indices.keys():
         print(f"Target index is not found in {config('APP_ENV')}.")
+        sys.exit(1)
 
     # 結果の表示
     print("================================")
@@ -112,7 +113,9 @@ def main():
     # 削除 or 終了
     if key_input in ["Y", "y", "yes"]:
         print(f"=> Target indices have deleted in {config('APP_ENV')}.")
-        es.indices.delete(index=list(deletable_indices.keys()))
+        for i in range(0, len(list(deletable_indices.keys())), 100):
+            # 大量のindexを指定するとサイズオーバーでリクエストできないので分ける
+            es.indices.delete(index=list(deletable_indices.keys())[i: i + 100])
     print("Exit this program.")
 
 
